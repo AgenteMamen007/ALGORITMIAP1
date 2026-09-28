@@ -110,10 +110,12 @@ def plot_single_curve(
         label: Texto de la leyenda. Si es ``None``, no se muestra leyenda.
         style: Formato de la línea y los marcadores, por ejemplo ``"o-"``.
         color: Color de la curva, por ejemplo ``"b"`` o ``"tab:blue"``.
-        grid: Indica si se debe mostrar una cuadrícula.
+        grid: 
+        Indica si se debe mostrar una cuadrícula.
         filename: Nombre del fichero de salida. Si es ``None``, no se guarda.
         figsize: Tupla ``(ancho, alto)`` expresada en pulgadas.
-
+find_duplicates: devuelve los elementos repetidos, en el orden en que aparece su segunda ocurrencia. Se resuelve con un set de vistos y otro de ya añadidos.
+has_sum_pair: debe 
     Returns:
         ``None``. La función muestra la gráfica y, opcionalmente, la guarda.
 
@@ -155,3 +157,25 @@ def plot_single_curve(
 
     # Mostrar la figura en pantalla.
     plt.show()
+    
+def find_duplicates(lst):
+    dlst = []
+    for n in range(len(lst)):
+        if lst[n] in lst[n+1:]:
+            if lst[n] not in dlst:
+                dlst.append(lst[n])
+
+    return dlst
+
+
+def has_sum_pair(par):
+    lst = par[0]
+    target = par[1]
+    vistos = set()
+
+    for n in lst:
+        value = target-n
+        if value in vistos:
+            return True
+        vistos.add(n)
+    return False
