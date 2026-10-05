@@ -37,6 +37,12 @@ std_con = [math.sqrt(v) for (m, v) in resultado_con_pareja] # Desviación típic
 medias_sin = [m for (m, v) in resultado_sin_pareja]
 std_sin = [math.sqrt(v) for (m, v) in resultado_sin_pareja] # Desviación típica
 
+plt.plot(Nlist, medias_con, label="Con pareja", color='#1f77b4')
+plt.fill_between(Nlist, 
+                 [max(0, m - s) for m, s in zip(medias_con, std_con)], 
+                 [m + s for m, s in zip(medias_con, std_con)], 
+                 color='#1f77b4', alpha=0.2)
+
 plt.plot(Nlist, medias_sin, label="Sin pareja", color='#ff7f0e')
 plt.fill_between(Nlist, 
                  [max(0, m - s) for m, s in zip(medias_sin, std_sin)], 

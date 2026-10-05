@@ -196,12 +196,12 @@ def rle_encode_naive(lst):
     contador=1
 
     for elem in lst[1:]:
-        if actual==elem:
+        if elem == actual:
             contador+=1
         else:
             resultado=resultado + [(actual,contador)]
-            actual=elem
-            contador=1
+            actual = elem
+            contador = 1
 
     resultado=resultado+[(actual,contador)]
     return resultado
