@@ -159,12 +159,18 @@ has_sum_pair: debe
     plt.show()
     
 def find_duplicates(lst):
+    vistos = set()
+    añadidos = set()
     dlst = []
-    for n in range(len(lst)):
-        if lst[n] in lst[n+1:]:
-            if lst[n] not in dlst:
-                dlst.append(lst[n])
-
+    
+    for elemento in lst:
+        if elemento in vistos:
+            if elemento not in añadidos:
+                añadidos.add(elemento)
+                dlst.append(elemento)
+        else:
+            vistos.add(elemento)
+            
     return dlst
 
 

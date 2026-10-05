@@ -1,4 +1,5 @@
 import random
+import math
 import matplotlib.pyplot as plt
 from p1 import time_measure, has_sum_pair
 
@@ -31,13 +32,23 @@ resultado_sin_pareja = time_measure(has_sum_pair, prep_sin_pareja, Nlist, Nrep=1
 # 4. Dibujar la gráfica
 
 medias_con = [m for (m, v) in resultado_con_pareja]
-medias_sin = [m for (m, v) in resultado_sin_pareja]
+std_con = [math.sqrt(v) for (m, v) in resultado_con_pareja] # Desviación típica
 
-plt.plot(Nlist, medias_con, label="Con pareja")
-plt.plot(Nlist, medias_sin, label="Sin pareja")
+medias_sin = [m for (m, v) in resultado_sin_pareja]
+std_sin = [math.sqrt(v) for (m, v) in resultado_sin_pareja] # Desviación típica
+
+plt.plot(Nlist, medias_sin, label="Sin pareja", color='#ff7f0e')
+plt.fill_between(Nlist, 
+                 [max(0, m - s) for m, s in zip(medias_sin, std_sin)], 
+                 [m + s for m, s in zip(medias_sin, std_sin)], 
+                 color='#ff7f0e', alpha=0.2)
+
 plt.xlabel("Tamaño de la lista (n)")
 plt.ylabel("Tiempo medio (segundos)")
-plt.title("has_sum_pair")
+plt.title("Rendimiento de has_sum_pair")
 plt.legend()
-plt.savefig("has_sum_pair.png")       # esto sí se guarda en la carpeta
+plt.grid(True, linestyle="--", alpha=0.6)
+plt.tight_layout()
+
+plt.savefig("has_sum_pair.png", dpi=300)
 plt.show()
