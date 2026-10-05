@@ -2,57 +2,44 @@ import math
 import matplotlib.pyplot as plt
 from p1 import time_measure, rle_encode_naive, rle_encode_optimized
 
-# 1. Preparación de datos (Pocas rachas vs Muchas rachas)
 def prep_muchas_rachas(n):
-    # Alterna valores continuamente. Ejemplo: [0, 1, 0, 1, 0, 1...]
     return [i % 2 for i in range(n)]
 
 def prep_pocas_rachas(n):
-    # Crea solo dos rachas gigantes. Ejemplo para n=10: [0,0,0,0,0, 1,1,1,1,1]
     mitad = n // 2
     return [0] * mitad + [1] * (n - mitad)
 
-# 2. Tamaños a probar
-# Es posible que debas reducir el límite a 5000 si la versión naive tarda demasiado
-Nlist = list(range(100, 5000, 500))
+Nlist = list(range(100, 5001, 500))
 
-# 3. Medición (Evaluando el impacto de crear muchas tuplas)
-print("Midiendo naive...")
-res_naive = time_measure(rle_encode_naive, prep_muchas_rachas, Nlist, Nrep=50, Nstat=10)
+# Medimos los cuatro escenarios
+print("Midiendo Naive...")
+res_naive_muchas = time_measure(rle_encode_naive, prep_muchas_rachas, Nlist, Nrep=20, Nstat=10)
+res_naive_pocas = time_measure(rle_encode_naive, prep_pocas_rachas, Nlist, Nrep=20, Nstat=10)
 
-print("Midiendo optimized...")
-res_opt = time_measure(rle_encode_optimized, prep_muchas_rachas, Nlist, Nrep=50, Nstat=10)
+print("Midiendo Optimized...")
+res_opt_muchas = time_measure(rle_encode_optimized, prep_muchas_rachas, Nlist, Nrep=20, Nstat=10)
+res_opt_pocas = time_measure(rle_encode_optimized, prep_pocas_rachas, Nlist, Nrep=20, Nstat=10)
 
-# 4. Desempaquetar datos
-medias_naive = [m for m, v in res_naive]
-std_naive = [math.sqrt(v) for m, v in res_naive]
-
-medias_opt = [m for m, v in res_opt]
-std_opt = [math.sqrt(v) for m, v in res_opt]
-
-# 5. Dibujar gráfica comparativa
 plt.figure(figsize=(10, 6))
 
-# Línea Naive
-plt.plot(Nlist, medias_naive, label="Naive (Muchas rachas)", color='#d62728')
-plt.fill_between(Nlist, 
-                 [max(0, m - s) for m, s in zip(medias_naive, std_naive)], 
-                 [m + s for m, s in zip(medias_naive, std_naive)], 
-                 color='#d62728', alpha=0.2)
+def plot_res(Nlist, res, label, color, linestyle='-'):
+    medias = [m for m, v in res]
+    stds = [math.sqrt(v) for m, v in res]
+    plt.plot(Nlist, medias, label=label, color=color, linestyle=linestyle, linewidth=2)
+    plt.fill_between(Nlist, [max(0, m-s) for m,s in zip(medias, stds)], [m+s for m,s in zip(medias, stds)], color=color, alpha=0.1)
 
-# Línea Optimizada
-plt.plot(Nlist, medias_opt, label="Optimized (Muchas rachas)", color='#2ca02c')
-plt.fill_between(Nlist, 
-                 [max(0, m - s) for m, s in zip(medias_opt, std_opt)], 
-                 [m + s for m, s in zip(medias_opt, std_opt)], 
-                 color='#2ca02c', alpha=0.2)
+# Dibujamos las 4 curvas
+plot_res(Nlist, res_naive_muchas, "Naive (Muchas rachas)", "#d62728")      
+plot_res(Nlist, res_opt_muchas, "Optimized (Muchas rachas)", "#2ca02c")    
+plot_res(Nlist, res_naive_pocas, "Naive (Pocas rachas)", "#ff7f0e", '--')  
+plot_res(Nlist, res_opt_pocas, "Optimized (Pocas rachas)", "#1f77b4", '--')
 
 plt.xlabel("Tamaño de la lista (n)")
 plt.ylabel("Tiempo medio (segundos)")
-plt.title("Comparativa de RLE: Naive vs Optimized")
-plt.legend()
+plt.title("Comparativa completa de RLE")
+plt.legend(loc="upper left")
 plt.grid(True, linestyle="--", alpha=0.6)
 plt.tight_layout()
 
-plt.savefig("rle_muchas_rachas.png", dpi=300)
+plt.savefig("rle_completo.png", dpi=300)
 plt.show()
