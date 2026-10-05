@@ -185,3 +185,42 @@ def has_sum_pair(par):
             return True
         vistos.add(n)
     return False
+
+
+def rle_encode_naive(lst):
+    if not lst:
+        return []
+    
+    resultado= []
+    actual= lst[0]
+    contador=1
+
+    for elem in lst[1:]:
+        if actual==elem:
+            contador+=1
+        else:
+            resultado=resultado + [(actual,contador)]
+            actual=elem
+            contador=1
+
+    resultado=resultado+[(actual,contador)]
+    return resultado
+
+def rle_encode_optimized(lst):
+    if not lst:
+        return []
+
+    resultado = []
+    actual = lst[0]
+    contador = 1
+
+    for elem in lst[1:]:
+        if elem == actual:
+            contador += 1
+        else:
+            resultado.append((actual, contador))  
+            actual = elem
+            contador = 1
+
+    resultado.append((actual, contador))  
+    return resultado
