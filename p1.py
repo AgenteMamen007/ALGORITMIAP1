@@ -260,7 +260,7 @@ def union(rep_1: int, rep_2: int, p_cd: np.ndarray) -> int:
         p_cd[rep_2] -= 1
         return rep_1
 
-def cd_2_dict(p_cd: np.ndarray) -> Dict:
+def cd_2_dict(p_cd: np.ndarray)-> Dict:
     resultado = {}
     
     for i in range(len(p_cd)):
