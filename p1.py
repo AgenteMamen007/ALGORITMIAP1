@@ -231,19 +231,7 @@ def init_cd(n: int)-> np.ndarray:
     cd_array = np.full(n, -1, dtype=int)
     return cd_array
 
-def find(ind: int, p_cd: np.ndarray)-> int:
-    z = ind
-    while p_cd[z] >= 0:
-        z = p_cd[z]
-    
-    while p_cd[ind] >= 0: 
-        next_node = p_cd[ind]
-        p_cd[ind] = z
-        ind = next_node
-
-    return z
-
-def union(rep_1: int, rep_2: int, p_cd: np.ndarray) -> int:
+def union(rep_1: int, rep_2: int, p_cd: np.ndarray)-> int:
     if rep_1 == rep_2:
         return rep_1
 
@@ -259,6 +247,18 @@ def union(rep_1: int, rep_2: int, p_cd: np.ndarray) -> int:
         p_cd[rep_1] = rep_2
         p_cd[rep_2] -= 1
         return rep_1
+
+def find(ind: int, p_cd: np.ndarray)-> int:
+    z = ind
+    while p_cd[z] >= 0:
+        z = p_cd[z]
+    
+    while p_cd[ind] >= 0: 
+        next_node = p_cd[ind]
+        p_cd[ind] = z
+        ind = next_node
+
+    return z
 
 def cd_2_dict(p_cd: np.ndarray)-> Dict:
     resultado = {}
