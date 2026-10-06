@@ -6,6 +6,8 @@ import time  # Proporciona temporizadores de alta resolución.
 
 import matplotlib.pyplot as plt  # Biblioteca utilizada para crear gráficas.
 
+import numpy as np
+from typing import Dict
 
 # I.A.1. Medición de tiempos de ejecución
 def time_measure(
@@ -223,4 +225,50 @@ def rle_encode_optimized(lst):
             contador = 1
 
     resultado.append((actual, contador))  
+    return resultado
+
+def init_cd(n: int)-> np.ndarray:
+    cd_array = np.full(n, -1, dtype=int)
+    return cd_array
+
+def find(ind: int, p_cd: np.ndarray)-> int:
+    z = ind
+    while p_cd[z] >= 0:
+        z = p_cd[z]
+    
+    while p_cd[ind] >= 0: 
+        next_node = p_cd[ind]
+        p_cd[ind] = z
+        ind = next_node
+
+    return z
+
+def union(rep_1: int, rep_2: int, p_cd: np.ndarray) -> int:
+    if rep_1 == rep_2:
+        return rep_1
+
+    if p_cd[rep_1] < p_cd[rep_2]:
+        p_cd[rep_2] = rep_1
+        return rep_1
+        
+    elif p_cd[rep_2] < p_cd[rep_1]:
+        p_cd[rep_1] = rep_2
+        return rep_2
+        
+    else:
+        p_cd[rep_1] = rep_2
+        p_cd[rep_2] -= 1
+        return rep_1
+
+def cd_2_dict(p_cd: np.ndarray) -> Dict:
+    resultado = {}
+    
+    for i in range(len(p_cd)):
+        rep = find(i, p_cd)
+        
+        if rep not in resultado:
+            resultado[rep] = []
+            
+        resultado[rep].append(i)
+        
     return resultado

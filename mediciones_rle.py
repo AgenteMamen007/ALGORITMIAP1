@@ -1,13 +1,28 @@
+import random
 import math
 import matplotlib.pyplot as plt
 from p1 import time_measure, rle_encode_naive, rle_encode_optimized
 
 def prep_muchas_rachas(n):
-    return [i % 2 for i in range(n)]
+    return [random.randint(1, 1000000) for _ in range(n)]
 
 def prep_pocas_rachas(n):
-    mitad = n // 2
-    return [0] * mitad + [1] * (n - mitad)
+    num_rachas = random.randint(3, 6)
+    lst = []
+    
+    tamano_racha = n // num_rachas
+    
+    for i in range(num_rachas):
+        valor = random.randint(1, 1000)
+
+        if i == num_rachas - 1:
+            cantidad = n - len(lst)
+        else:
+            cantidad = tamano_racha
+            
+        lst.extend([valor] * cantidad)
+        
+    return lst
 
 Nlist = list(range(100, 5001, 500))
 
