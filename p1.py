@@ -7,7 +7,7 @@ import time  # Proporciona temporizadores de alta resolución.
 import matplotlib.pyplot as plt  # Biblioteca utilizada para crear gráficas.
 
 import numpy as np
-from typing import Dict
+from typing import Dict, List
 
 # I.A.1. Medición de tiempos de ejecución
 def time_measure(
@@ -246,7 +246,7 @@ def union(rep_1: int, rep_2: int, p_cd: np.ndarray)-> int:
     else:
         p_cd[rep_1] = rep_2
         p_cd[rep_2] -= 1
-        return rep_1
+        return rep_2
 
 def find(ind: int, p_cd: np.ndarray)-> int:
     z = ind
@@ -272,3 +272,15 @@ def cd_2_dict(p_cd: np.ndarray)-> Dict:
         resultado[rep].append(i)
         
     return resultado
+
+def ccs(n: int, l: List) -> Dict:
+    p_cd = init_cd(n)
+
+    for u, v in l:
+        r1 = find(u, p_cd)
+        r2 = find(v, p_cd)
+
+        if r1 != r2:
+            union(r1, r2, p_cd)
+            
+    return cd_2_dict(p_cd)
