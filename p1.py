@@ -1,13 +1,10 @@
-#Utilidades para medir tiempos de ejecución y representar resultados.
+# Práctica 1 - Algoritmia y Estructuras de Datos Avanzadas.
 
-from collections.abc import Callable, Iterable, Sequence
-from typing import Any
+from collections.abc import Callable, Sequence
+from typing import Any, Dict, List
 import time  # Proporciona temporizadores de alta resolución.
 
-import matplotlib.pyplot as plt  # Biblioteca utilizada para crear gráficas.
-
 import numpy as np
-from typing import Dict, List
 
 # I.A.1. Medición de tiempos de ejecución
 def time_measure(
@@ -87,79 +84,6 @@ def time_measure(
     return results
 
 
-# Función auxiliar para generar una gráfica de una serie de datos.
-def plot_single_curve(
-    x: Sequence[float],
-    y: Sequence[float],
-    title: str = "Gráfica de datos",
-    xlabel: str = "Eje X",
-    ylabel: str = "Eje Y",
-    label: str | None = None,
-    style: str = "o-",
-    color: str = "b",
-    grid: bool = True,
-    filename: str | None = None,
-    figsize: tuple[float, float] = (8.0, 5.0),
-) -> None:
-    """Genera y muestra una gráfica para una única serie de datos.
-
-    Args:
-        x: Valores que se mostrarán en el eje horizontal.
-        y: Valores que se mostrarán en el eje vertical.
-        title: Título de la gráfica.
-        xlabel: Etiqueta del eje horizontal.
-        ylabel: Etiqueta del eje vertical.
-        label: Texto de la leyenda. Si es ``None``, no se muestra leyenda.
-        style: Formato de la línea y los marcadores, por ejemplo ``"o-"``.
-        color: Color de la curva, por ejemplo ``"b"`` o ``"tab:blue"``.
-        grid: 
-        Indica si se debe mostrar una cuadrícula.
-        filename: Nombre del fichero de salida. Si es ``None``, no se guarda.
-        figsize: Tupla ``(ancho, alto)`` expresada en pulgadas.
-find_duplicates: devuelve los elementos repetidos, en el orden en que aparece su segunda ocurrencia. Se resuelve con un set de vistos y otro de ya añadidos.
-has_sum_pair: debe 
-    Returns:
-        ``None``. La función muestra la gráfica y, opcionalmente, la guarda.
-
-    Raises:
-        ValueError: Si ``x`` e ``y`` no tienen la misma longitud.
-    """
-    # Una curva necesita un valor x para cada valor y.
-    if len(x) != len(y):
-        raise ValueError("x e y deben tener la misma longitud")
-
-    # Crear una figura nueva evita mezclar esta gráfica con otra anterior.
-    plt.figure(figsize=figsize)
-
-    # Dibujar la serie de datos con el estilo y el color solicitados.
-    plt.plot(x, y, style, color=color, label=label)
-
-    # Añadir información descriptiva facilita la interpretación de la gráfica.
-    plt.title(title)
-    plt.xlabel(xlabel)
-    plt.ylabel(ylabel)
-
-    # La cuadrícula es opcional para no imponer una presentación concreta.
-    if grid:
-        plt.grid(True, linestyle="--", alpha=0.6)
-
-    # Solo se muestra la leyenda cuando se ha proporcionado una etiqueta.
-    if label is not None:
-        plt.legend(loc="best")
-
-    # Ajustar automáticamente los márgenes evita que se corten las etiquetas.
-    plt.tight_layout()
-
-    # Guardar la figura únicamente cuando se ha indicado un nombre de fichero.
-    if filename is not None:
-        # split(".") funciona en ejemplos sencillos; pathlib sería preferible
-        # en programas más robustos para trabajar con extensiones de fichero.
-        file_format: str = filename.rsplit(".", maxsplit=1)[-1]
-        plt.savefig(filename, format=file_format, dpi=300)
-
-    # Mostrar la figura en pantalla.
-    plt.show()
-    
 def find_duplicates(lst):
     vistos = set()
     añadidos = set()
@@ -258,7 +182,7 @@ def find(ind: int, p_cd: np.ndarray)-> int:
         p_cd[ind] = z
         ind = next_node
 
-    return z
+    return int(z)
 
 def cd_2_dict(p_cd: np.ndarray)-> Dict:
     resultado = {}
